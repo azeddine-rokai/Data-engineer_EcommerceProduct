@@ -1,4 +1,3 @@
-version: '3.8'
 services:
   zookeeper:
     image: confluentinc/cp-zookeeper:7.4.0
@@ -77,3 +76,25 @@ services:
       - elasticsearch
     ports:
       - 5601:5601
+
+  jobmanager:
+    image: flink:latest
+    ports:
+      - "8081:8081"
+    command: jobmanager
+    environment:
+      - |
+        FLINK_PROPERTIES=
+        jobmanager.rpc.address: jobmanager        
+
+  taskmanager:
+    image: flink:latest
+    depends_on:
+      - jobmanager
+    command: taskmanager
+    scale: 1
+    environment:
+      - |
+        FLINK_PROPERTIES=
+        jobmanager.rpc.address: jobmanager
+        taskmanager.numberOfTaskSlots: 3    

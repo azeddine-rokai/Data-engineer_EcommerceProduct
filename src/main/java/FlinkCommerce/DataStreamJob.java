@@ -44,7 +44,7 @@ import java.sql.Date;
 import static utils.JsonUtil.convertTransactionToJson;
 
 public class DataStreamJob {
-    private static final String jdbcUrl = "jdbc:postgresql://localhost:5432/postgres";
+    private static final String jdbcUrl = "jdbc:postgresql://postgres:5432/postgres";
     private static final String username = "postgres";
     private static final String password = "postgres";
 
@@ -56,7 +56,7 @@ public class DataStreamJob {
         String topic = "financial_transactions";
 
         KafkaSource<Transaction> source = KafkaSource.<Transaction>builder()
-                .setBootstrapServers("localhost:9092")
+                .setBootstrapServers("broker:29092")
                 .setTopics(topic)
                 .setGroupId("flink-group")
                 .setStartingOffsets(OffsetsInitializer.earliest())
